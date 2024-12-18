@@ -4,16 +4,32 @@ body {
     padding: 0;
     background-color: #f8f9fa;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
     transition: background-color 0.3s ease;
+    overflow-x: hidden;
 }
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: calc(100vh * 1.4);
+    background-image: url('Adam.jpg');
+    background-size: cover;
+    background-position: left;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
 
 #chat-container {
     position: relative;
     width: 380px;
-    height: 680px;
+    /* Usunięto sztywną wysokość */
     background-color: #fff;
     border-radius: 30px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
@@ -21,24 +37,28 @@ body {
     display: flex;
     flex-direction: column;
     transition: box-shadow 0.3s ease;
+     margin-left: calc(100vh * 1.15);
+     margin-top: 15px; /* Stały górny margines */
+    margin-bottom: 15px; /* Stały dolny margines */
+    height: calc(100vh - 30px); /* Dynamiczna wysokość z uwzględnieniem marginesów */
 }
+
 
 /* Mobile Styles */
 @media (max-width: 768px) {
     body {
         align-items: flex-start;
-        /* Reset align-items for mobile */
+         justify-content: center;
     }
 
     #chat-container {
+        margin-left: 0;
+         margin-top: 0; /* Usuwamy marginesy na mobile */
+         margin-bottom: 0;
         width: 100%;
-        /* Full width on mobile */
         height: 100vh;
-        /* Full height on mobile */
         border-radius: 0;
-        /* Remove rounded corners on mobile */
         box-shadow: none;
-        /* Remove shadow on mobile */
     }
 
     #chat-messages {
@@ -48,8 +68,11 @@ body {
         display: flex;
         flex-direction: column;
     }
-}
 
+    body::before {
+        display: none;
+    }
+}
 
 #chat-container:hover {
     box-shadow: 0 12px 45px rgba(0, 0, 0, 0.15);
@@ -73,7 +96,6 @@ body {
 @media (max-width: 768px) {
     #chat-header {
         border-radius: 0;
-        /* No top corner radius on mobile */
     }
 }
 
@@ -116,7 +138,6 @@ body {
     overflow-wrap: break-word;
 }
 
-
 .user-message {
     background-color: #e4e6eb;
     align-self: flex-end;
@@ -129,8 +150,6 @@ body {
     color: white;
     font-size: 13px;
 }
-
-
 
 .message:hover {
     transform: scale(1.02);
@@ -167,7 +186,6 @@ body {
 @media (max-width: 768px) {
     #chat-input {
         border-radius: 0;
-        /* No bottom corner radius on mobile */
     }
 }
 
@@ -232,16 +250,12 @@ body {
     animation-delay: -0.9s;
 }
 
-
-
 @keyframes bounce {
-
     0%,
     60%,
     100% {
         transform: translateY(0);
     }
-
     30% {
         transform: translateY(-4px);
     }
@@ -254,21 +268,16 @@ body {
 /* Style dla Markdown */
 .message p {
     margin-bottom: 0.8em;
-    /* Zmniejszenie marginesu dolnego dla paragrafów */
     margin-top: 0;
-    /* Usunięcie górnego marginesu */
     line-height: 1.6;
 }
 
 .message ul {
     padding-left: 1.5em;
-    /* Zmniejszenie marginesu lewego dla list */
     margin-bottom: 0.8em;
-    /* Zmniejszenie marginesu dolnego dla list */
     margin-top: 0;
 }
 
 .message li {
     margin-bottom: 0.4em;
-    /* Zmniejszenie marginesu dolnego dla elementów list */
 }
