@@ -1,10 +1,14 @@
+.toolbar_pillbar__SSKzY.toolbar_shrunk__bUdpj {
+    display: none !important;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f8f9fa;
     display: flex;
-    justify-content: center; /* Wyśrodkowanie poziome */
+    justify-content: center;
     align-items: center;
     min-height: 100vh;
     transition: background-color 0.3s ease;
@@ -34,12 +38,12 @@ body::before {
     display: flex;
     flex-direction: column;
     transition: box-shadow 0.3s ease;
-     /* Ustawienie maksymalnej szerokości i automatycznej wysokości */
-    max-width: 380px; 
-    width: 100%; /* Zapewnienie responsywności szerokości */
-    max-height: 90vh; /* Maksymalna wysokość dla desktopu */
-    margin: 15px; /* Dodany margines */
+    max-width: 380px;
+    width: 100%;
+    max-height: calc(100vh - 30px); /* Maksymalna wysokość z uwzględnieniem marginesu */
+    margin: 15px;
 }
+
 /* Mobile Styles */
 @media (max-width: 768px) {
     body {
@@ -48,14 +52,12 @@ body::before {
     }
 
     #chat-container {
-        margin-left: 0;
-        margin-top: 0;
-        margin-bottom: 0;
+        margin: 0;
         width: 100%;
-        height: 100vh; /* Pełna wysokość na mobile */
+        height: 100vh;
         border-radius: 0;
         box-shadow: none;
-        max-height: none; /* Reset max-height na mobile */
+        max-height: none;
     }
 
     #chat-messages {
