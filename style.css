@@ -40,6 +40,7 @@ body::before {
     transition: box-shadow 0.3s ease;
     max-width: 40vh;
     width: 40vh;
+    margin-left: calc(100vh * 1.15);
     margin: 15px;
     height: 80vh; /* Adjusted height */
     max-height: 80vh; /* Added max height */
