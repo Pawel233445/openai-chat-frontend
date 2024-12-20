@@ -41,7 +41,6 @@ body::before {
     max-width: 40vh;
     width: 40vh;
     margin-left: calc(100vh * 1.15);
-    margin: 15px;
     height: 80vh; /* Adjusted height */
     max-height: 80vh; /* Added max height */
     /* min-height: 400px;  Minimum height to avoid too small elements */
