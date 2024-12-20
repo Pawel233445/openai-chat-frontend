@@ -1,14 +1,10 @@
-.toolbar_pillbar__SSKzY.toolbar_shrunk__bUdpj {
-    display: none !important;
-}
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f8f9fa;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center; /* Wyśrodkowanie poziome */
     align-items: center;
     min-height: 100vh;
     transition: background-color 0.3s ease;
@@ -31,7 +27,6 @@ body::before {
 
 #chat-container {
     position: relative;
-    width: 380px;
     background-color: #fff;
     border-radius: 30px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
@@ -39,12 +34,11 @@ body::before {
     display: flex;
     flex-direction: column;
     transition: box-shadow 0.3s ease;
-    margin-left: calc(100vh * 1.15);
-    margin-top: 15px;
-    margin-bottom: 15px;
-    /* Dodana dynamiczna wysokość dla desktopu */
-    height: calc(100vh - 30px);
+     /* Ustawienie maksymalnej szerokości i automatycznej wysokości */
+    max-width: 380px; 
+    width: 100%; /* Zapewnienie responsywności szerokości */
     max-height: 90vh; /* Maksymalna wysokość dla desktopu */
+    margin: 15px; /* Dodany margines */
 }
 /* Mobile Styles */
 @media (max-width: 768px) {
