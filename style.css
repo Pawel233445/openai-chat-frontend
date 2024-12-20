@@ -38,10 +38,10 @@ body::before {
     display: flex;
     flex-direction: column;
     transition: box-shadow 0.3s ease;
-    max-width: 380px;
-    width: 100%;
+    max-width: 40vh;
+    width: 40vh;
     margin: 15px;
-    height: 500px; /* Adjusted height */
+    height: 80vh; /* Adjusted height */
     max-height: 80vh; /* Added max height */
     /* min-height: 400px;  Minimum height to avoid too small elements */
 }
