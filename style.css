@@ -40,8 +40,10 @@ body::before {
     transition: box-shadow 0.3s ease;
     max-width: 380px;
     width: 100%;
-    max-height: calc(100vh - 30px); /* Maksymalna wysokość z uwzględnieniem marginesu */
     margin: 15px;
+    height: 500px; /* Adjusted height */
+    max-height: 80vh; /* Added max height */
+    /* min-height: 400px;  Minimum height to avoid too small elements */
 }
 
 /* Mobile Styles */
@@ -126,6 +128,7 @@ body::before {
     padding: 20px;
     display: flex;
     flex-direction: column;
+    min-height: 250px;
 }
 
 .message {
