@@ -12,7 +12,7 @@ async function initializeChat() {
     try {
         messageCount = 0;
         console.log('Chat initialized with thread ID:', threadId);
-        displayMessage('assistant', 'Cześć, chętnie odpowiem anonimowo na Twoje pytania dotyczące menstruacji. Pamiętaj, każde pytanie jest właściwe. :)');
+        displayMessage('assistant', 'Cześć, jestem Adam Mickiewicz i chętnie Ci o sobie opowiem. :)');
     } catch (error) {
         console.error('Error initializing chat:', error);
     }
