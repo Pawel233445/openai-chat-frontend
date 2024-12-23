@@ -13,22 +13,38 @@
 </head>
 
 <body>
-    <div id="chat-container">
+    <div class="content-wrapper">
+      <div class="text-container">
+           <h1 class="main-title">
+                <span class="title-part-1">Nie bądź dziad!</span><br>
+				<span class="title-part-2">Pogadaj z Adamem</span><br>
+           </h1>
+            <p class="description">
+                Porozmawiaj anonimowo z naszym botem i uzyskaj odpowiedzi na pytania związane z menstruacją.
+            </p>
+            <p class="description description-last">
+                Pamiętaj, każde pytanie jest właściwe.
+            </p>
+      </div>
+    
+       <div id="chat-container">
         <div id="chat-header">
             <span>Porozmawiaj z Adamem Mickiewiczem</span>
-            <button id="reset-chat" title="Wyczyść czat"><i class="fas fa-broom"></i></button>
+            <button id="reset-chat" title="Wyczyść czat" aria-label="Wyczyść czat"><i class="fas fa-sync-alt"></i></button>
         </div>
-        <div id="chat-messages"></div>
-        <div id="chat-input">
-            <input type="text" placeholder="Wyślij wiadomość...">
-            <button>
-                <svg id="send-icon" viewBox="0 0 24 24">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                </svg>
-            </button>
+        <div id="chat-messages" role="region" aria-label="Wiadomości czatu"></div>
+         <div id="chat-input">
+            <form id="chat-form">
+                <input type="text" placeholder="Wyślij wiadomość..." aria-label="Wyślij wiadomość">
+                    <button aria-label="Wyślij wiadomość">
+                       <svg id="send-icon" viewBox="0 0 24 24">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                        </svg>
+                   </button>
+            </form>
         </div>
     </div>
-
+   </div>
     <div id="chat-plugin">
         <div id="chat-tooltip">Porozmawiaj ze mną</div>
         <div id="chat-button">
