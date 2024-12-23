@@ -1,17 +1,18 @@
-let threadId = '';
+let threadId = null;
 let messageCount = 0;
 const chatContainer = document.getElementById('chat-container');
 const chatInput = document.querySelector('#chat-input input');
 const chatSendButton = document.querySelector('#chat-input button');
 const chatMessages = document.getElementById('chat-messages');
 const resetChat = document.getElementById('reset-chat');
+const chatForm = document.getElementById('chat-form');
 const SERVERLESS_FUNCTION_URL = 'https://europe-central2-mickiewicz.cloudfunctions.net/chat'; // Zmień na URL swojej funkcji
 
 async function initializeChat() {
     try {
         messageCount = 0;
         console.log('Chat initialized with thread ID:', threadId);
-        displayMessage('assistant', 'Cześć, jestem Adam. Chętnie Ci o sobie opowiem. :)');
+        displayMessage('assistant', 'Cześć, chętnie odpowiem anonimowo na Twoje pytania dotyczące menstruacji. Pamiętaj, każde pytanie jest właściwe. :)');
     } catch (error) {
         console.error('Error initializing chat:', error);
     }
@@ -94,23 +95,26 @@ resetChat.addEventListener('click', () => {
     // Reset all counters when closing the chat
     messageCount = 0;
     chatMessages.innerHTML = '';
-    threadId = '';
+    threadId = null; // ustawiamy na null
     initializeChat();
 });
-
-chatSendButton.addEventListener('click', () => {
+    
+chatForm.addEventListener('submit', function(event) {
+    event.preventDefault();
     const message = chatInput.value.trim();
-    if (message) {
+      if (message) {
         sendMessage(message);
         chatInput.value = '';
     }
 });
+
 
 chatInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         chatSendButton.click();
     }
 });
+
 
 // Initialize chat on page load
 window.onload = function () {
