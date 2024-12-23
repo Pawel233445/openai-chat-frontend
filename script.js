@@ -11,7 +11,7 @@ async function initializeChat() {
     try {
         messageCount = 0;
         console.log('Chat initialized with thread ID:', threadId);
-        displayMessage('assistant', 'W czym mogę pomóc?');
+        displayMessage('assistant', 'Cześć, jestem Adam. Chętnie Ci o sobie opowiem. :)');
     } catch (error) {
         console.error('Error initializing chat:', error);
     }
