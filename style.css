@@ -198,6 +198,8 @@ body {
     }
       #chat-container {
             width: 60vh; /* Zwiększenie szerokości czatu */
+	    height: 90vh;
+	    max-height:90vh;
       }
        .text-container {
         max-width: 50em;
