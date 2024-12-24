@@ -197,7 +197,7 @@ body {
           padding-right: 5%;
     }
       #chat-container {
-            width: 27em; /* Zwiększenie szerokości czatu */
+            width: 60vh; /* Zwiększenie szerokości czatu */
       }
        .text-container {
         max-width: 50em;
