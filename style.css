@@ -492,8 +492,8 @@ p {
 
     .mobile-welcome-screen .main-title {
         margin-top: 0; /* Zmniejsz górny margines */
-        margin-bottom: 7vh;
-        font-size: 4vh; /* Zwiększ rozmiar czcionki tytułu */
+        margin-bottom: 4vh;
+        font-size: 3vh; /* Zwiększ rozmiar czcionki tytułu */
         font-family: 'Inter', sans-serif; /* Upewnij się, że używasz właściwej czcionki */
         font-weight: 700; /* Pogrubienie tekstu */
         text-align: center;
