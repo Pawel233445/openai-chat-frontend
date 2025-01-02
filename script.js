@@ -1,6 +1,7 @@
 let threadId = null;
 let messageCount = 0;
 let welcomeMessageShown = false;
+let chatSessionStarted = false; // Dodajemy flagę śledzącą rozpoczęcie sesji czatu
 const chatContainer = document.getElementById('chat-container');
 const chatInput = document.querySelector('#chat-input-frame input');
 const chatSendButton = document.querySelector('#chat-input button');
@@ -23,7 +24,8 @@ function saveChatToLocalStorage() {
             isMarkdown: element.innerHTML.includes("<p>")
         })),
         threadId: threadId,
-        messageCount: messageCount
+        messageCount: messageCount,
+        chatSessionStarted: chatSessionStarted // Zapisujemy stan sesji
     };
     localStorage.setItem('chatData', JSON.stringify(chatData));
 }
@@ -39,7 +41,8 @@ function loadChatFromLocalStorage() {
         }
         threadId = chatData.threadId;
         messageCount = chatData.messageCount;
-        console.log('Chat loaded from local storage with thread ID:', threadId);
+        chatSessionStarted = chatData.chatSessionStarted || false; // Wczytujemy stan sesji, domyślnie false
+        console.log('Chat loaded from local storage with thread ID:', threadId, 'Session started:', chatSessionStarted);
         scrollToBottom();
     }
 }
@@ -48,7 +51,7 @@ async function initializeChat(showWelcomeMessage = true) {
     try {
         messageCount = 0;
         loadChatFromLocalStorage();
-         if(!threadId && showWelcomeMessage && !welcomeMessageShown) {
+         if(!threadId && showWelcomeMessage && !welcomeMessageShown && !chatSessionStarted) {
             displayMessage('assistant', 'Cześć, jestem Adam Mickiewicz i chętnie Ci o sobie opowiem. :)');
            console.log('Chat initialized with thread ID:', threadId);
            welcomeMessageShown = true;
@@ -136,6 +139,7 @@ function clearChat() {
     threadId = null;
     localStorage.removeItem('chatData');
     welcomeMessageShown = false;
+    chatSessionStarted = false; // Resetujemy stan sesji
     initializeChat();
 }
 
@@ -164,6 +168,8 @@ backButton.addEventListener('click', () => {
 });
 
 startChatButton.addEventListener('click', () => {
+    chatSessionStarted = true; // Ustawiamy flagę rozpoczęcia sesji
+    saveChatToLocalStorage(); // Zapisujemy stan sesji
     requestAnimationFrame(() => {
         mobileWelcomeScreen.style.display = 'none';
         chatWrapper.style.display = 'flex';
@@ -179,19 +185,33 @@ window.onload = function () {
         mobileWelcomeScreen.style.display = 'none';
         chatWrapper.style.display = 'flex';
         backButton.style.display = 'none';
-         initializeChat();
+        initializeChat();
     } else {
-           mobileWelcomeScreen.style.display = 'flex';
-          chatWrapper.style.display = 'none';
-          initializeChat(); // Przywróć wywołanie initializeChat
+        // Sprawdzamy, czy sesja już się rozpoczęła
+        if (!chatSessionStarted) {
+            mobileWelcomeScreen.style.display = 'flex';
+            chatWrapper.style.display = 'none';
+        } else {
+            mobileWelcomeScreen.style.display = 'none';
+            chatWrapper.style.display = 'flex';
+            backButton.style.display = 'flex';
+        }
+        initializeChat();
     }
 };
 
 window.addEventListener('resize', function () {
     if (window.innerWidth <= 768) {
-        mobileWelcomeScreen.style.display = 'flex';
-        chatWrapper.style.display = 'none';
-        backButton.style.display = 'flex';
+        // Sprawdzamy, czy sesja już się rozpoczęła
+        if (!chatSessionStarted) {
+            mobileWelcomeScreen.style.display = 'flex';
+            chatWrapper.style.display = 'none';
+            backButton.style.display = 'none';
+        } else {
+            mobileWelcomeScreen.style.display = 'none';
+            chatWrapper.style.display = 'flex';
+            backButton.style.display = 'flex';
+        }
     } else {
         mobileWelcomeScreen.style.display = 'none';
         chatWrapper.style.display = 'flex';
