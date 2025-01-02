@@ -380,10 +380,10 @@ p {
     }
 
     #chat-wrapper {
-        padding-top: 55px; /* Dostosuj do wysokości nagłówka */
+        padding-top: 0; /* Usuwamy padding-top, bo header będzie sticky */
         box-sizing: border-box;
         height: 100vh;
-        overflow: hidden;
+        overflow: hidden; /* Pozostawiamy ukrywanie overflow */
         display: flex;
         flex-direction: column;
         padding-left: 0;
@@ -396,11 +396,11 @@ p {
     }
 
     #chat-header {
-        position: fixed;
-        top: 0;
+        position: sticky; /* Ustawiamy pozycję sticky */
+        top: 0; /* Przyklejenie do góry kontenera */
         left: 0;
         right: 0;
-        z-index: 200; /* Zwiększ z-index, aby był na wierzchu */
+        z-index: 100; /* Upewnienie się, że nagłówek jest nad innymi elementami */
         background-color: #fff;
         padding-left: 5vw;
         padding-right: 5vw;
@@ -412,16 +412,18 @@ p {
         width: 100%;
         margin-left: 0;
         margin-right: 0;
+        /* Dodajemy cień, aby oddzielić od treści */
+        box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);
     }
 
     #reset-chat {
-		display:none;
+        display: none;
     }
 
-	#reset{
-	display:contents;
-	font-size:5vh
-}
+    #reset {
+        display: contents;
+        font-size: 5vh;
+    }
 
     #back-button {
         display: flex !important;
@@ -435,7 +437,7 @@ p {
     }
 
     #chat-input-container {
-        position: fixed;
+        position: fixed; /* Pozostawiamy input fixed na dole */
         bottom: 0;
         left: 0;
         right: 0;
@@ -446,43 +448,43 @@ p {
         justify-content: center;
         align-items: flex-end;
         box-sizing: border-box;
-        z-index: 200; /* Zwiększ z-index */
-		padding-top: 0; /* Zmniejsz padding top */
+        z-index: 100;
+        padding-top: 0;
     }
 
     .message {
         font-size: 2vh;
     }
 
-	#cofnij{
-		width:2.5em!important;
-	}
+    #cofnij {
+        width: 2.5em !important;
+    }
 
-	#napis{
-		display:none;
-	}
+    #napis {
+        display: none;
+    }
 
-	#chat-messages {
-        padding-top: 55px; /* Dostosuj do wysokości nagłówka */
-        padding-bottom: calc(10vw + 2vh); /* Dostosuj do wysokości inputa */
+    #chat-messages {
+        padding-top: 55px; /* Dodajemy padding-top równy wysokości nagłówka */
+        padding-bottom: calc(10vw + 2vh);
         padding-left: 0.5em;
         padding-right: 0.5em;
         overflow-y: auto;
         height: auto;
-        max-height: calc(100vh - 55px - 14vw - 2vh); /* Obliczona max-height */
+        max-height: none; /* Usuwamy max-height, bo sticky zarządza widocznością */
         box-sizing: border-box;
-	}
+    }
 
     #send-button {
         font-size: 2.6vh;
         min-width: 6em;
-		top: 2.8vh;
+        top: 2.8vh;
         height: 4.5vh;
     }
 
     #chat-input-frame input {
         padding-left: 1.5em;
-		height:10vw;
+        height: 10vw;
     }
 
     .mobile-welcome-screen {
@@ -505,12 +507,12 @@ p {
         display: flex;
         justify-content: center;
         align-items: center;
-		margin-bottom:10vh;
+        margin-bottom: 10vh;
     }
 
     .mobile-welcome-screen .image-container img {
-        width: 100vh!important;
-        height: 100vh!important;
+        width: 100vh !important;
+        height: 100vh !important;
         object-fit: cover;
     }
 
@@ -544,7 +546,6 @@ p {
         border: none;
     }
 }
-
 /* Style dla desktop - ukryj ekran powitalny domyślnie */
 @media (min-width: 769px) {
     .mobile-welcome-screen {
