@@ -286,7 +286,6 @@ p {
     #chat-wrapper {
         padding-left: 3vh;
         max-width: 100%;
-	max-height: 100%;
         display: none;
     }
 
@@ -381,20 +380,36 @@ p {
     }
 
     #chat-wrapper {
-        padding-left: 3vh;
-        max-width: 100%;
-        display: none;
+        padding-top: 60px; /* Dodaj padding do wrapper'a, aby treść nie była zasłonięta przez nagłówek */
+        box-sizing: border-box;
+        height: 100vh; /* Ustaw pełną wysokość viewportu */
+        overflow: hidden; /* Ukryj overflow, aby uniknąć podwójnych pasków przewijania */
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+    }
+
+    #chat-container {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     #chat-header {
+        position: fixed; /* Ustawienie nagłówka jako stałego */
+        top: 0; /* Przyklejenie do góry ekranu */
+        left: 0;
+        right: 0;
+        z-index: 100; /* Upewnienie się, że nagłówek jest nad innymi elementami */
+        background-color: #fff; /* Upewnienie się, że tło zakrywa przewijane treści */
+        padding-left: 5vw; /* Dodaj padding z lewej strony */
+        padding-right: 5vw; /* Dodaj padding z prawej strony */
+        box-sizing: border-box; /* Uwzględnienie paddingu w szerokości */
         padding-top: 2vh;
         padding-bottom: 2vh;
-        padding-left: 0; /* Usuń lewy padding */
-        padding-right: 0; /* Usuń prawy padding */
         font-size: 2vh;
         align-items: center;
         width: 100%; /* Upewnij się, że zajmuje 100% szerokości */
-        box-sizing: border-box; /* Włącz model pudełkowy border-box */
         margin-left: 0;
         margin-right: 0;
     }
@@ -402,7 +417,7 @@ p {
     #reset-chat {
 		display:none;
     }
-	
+
 	#reset{
 	display:contents;
 	font-size:5vh
@@ -419,32 +434,44 @@ p {
         margin-right: 0px;
     }
 
-  
-
     #chat-input-container {
-        padding-bottom: 0vh;
+        position: fixed; /* Ustawienie kontenera input jako stałego */
+        bottom: 0; /* Przyklejenie do dołu ekranu */
+        left: 0;
+        right: 0;
+        background-color: #fff; /* Opcjonalnie, jeśli chcesz tło dla kontenera input */
+        padding-top: 2vw;
+        padding-bottom: 2vh; /* Dodaj padding dolny */
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        box-sizing: border-box;
+        z-index: 100; /* Upewnienie się, że jest nad innymi elementami */
 		padding-top:14vw;
     }
 
     .message {
         font-size: 2vh;
     }
-	
+
 	#cofnij{
 		width:2.5em!important;
 	}
-	
+
 	#napis{
 		display:none;
 	}
-	
-	#chat-messages {
-		padding-left:0.5em;
-		padding-right:0.5em;
-		padding-top:1.25em;
-		padding-bottom:1.25em;
-	}
 
+	#chat-messages {
+        padding-top: 60px; /* Dostosuj wartość, aby zrobić miejsce na nagłówek (wysokość nagłówka + trochę przestrzeni) */
+        padding-bottom: 1.25em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        overflow-y: auto; /* Upewnij się, że przewijanie jest włączone */
+        height: auto; /* Pozwól na automatyczne dostosowanie wysokości */
+        max-height: calc(100vh - 60px - 100px); /* Dostosuj max-height, odejmując wysokość nagłówka i kontenera input */
+        box-sizing: border-box;
+	}
 
     #send-button {
         font-size: 2.6vh;
@@ -463,13 +490,11 @@ p {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100%;
+        height: 100vh;
         width: 100%;
-	max-height:100%;
         background-color: #090c11; /* Tło ciemne, jak na grafice */
         color: #ffffff; /* Domyślny kolor tekstu na ekranie powitalnym */
     }
-
 
     .mobile-welcome-screen .image-container {
         width: 45vh; /* Dostosuj szerokość kontenera obrazka */
@@ -480,20 +505,20 @@ p {
         display: flex;
         justify-content: center;
         align-items: center;
-	margin-bottom:5vh;
+		margin-bottom:10vh;
     }
 
     .mobile-welcome-screen .image-container img {
         width: 100vh!important; /* Wypełnij cały kontener */
         height: 100vh!important;
         object-fit: cover; /* Dopasuj obrazek, zachowując proporcje i przycinając */
-		
+
     }
 
     .mobile-welcome-screen .main-title {
         margin-top: 0; /* Zmniejsz górny margines */
-        margin-bottom: 4vh;
-        font-size: 3vh; /* Zwiększ rozmiar czcionki tytułu */
+        margin-bottom: 7vh;
+        font-size: 4vh; /* Zwiększ rozmiar czcionki tytułu */
         font-family: 'Inter', sans-serif; /* Upewnij się, że używasz właściwej czcionki */
         font-weight: 700; /* Pogrubienie tekstu */
         text-align: center;
@@ -515,6 +540,10 @@ p {
         justify-content: center;
     }
 
+    #start-chat-button:hover {
+        background-color: #f0f0f0; /* Jaśniejsze tło przy najechaniu */
+        border: none;
+    }
 }
 
 /* Style dla desktop - ukryj ekran powitalny domyślnie */
