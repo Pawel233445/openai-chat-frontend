@@ -146,10 +146,12 @@ function clearChat() {
         mobileWelcomeScreen.style.display = 'none';
         chatWrapper.style.display = 'flex';
     } else {
-        // Jeśli jesteśmy na urządzeniu mobilnym, pokaż przycisk "wstecz"
+        // Jeśli jesteśmy na urządzeniu mobilnym, pokaż przycisk "wstecz" i ukryj ekran powitalny
         backButton.style.display = 'flex';
+        mobileWelcomeScreen.style.display = 'none';
+        chatWrapper.style.display = 'flex';
     }
-    initializeChat();
+    initializeChat(false);
 }
 
 resetChat.addEventListener('click', clearChat);
