@@ -140,6 +140,15 @@ function clearChat() {
     localStorage.removeItem('chatData');
     welcomeMessageShown = false;
     chatSessionStarted = false; // Resetujemy stan sesji
+
+    // Ukryj ekran powitalny i pokaż czat, jeśli jesteśmy na desktopie
+    if (window.innerWidth > 768) {
+        mobileWelcomeScreen.style.display = 'none';
+        chatWrapper.style.display = 'flex';
+    } else {
+        // Jeśli jesteśmy na urządzeniu mobilnym, pokaż przycisk "wstecz"
+        backButton.style.display = 'flex';
+    }
     initializeChat();
 }
 
@@ -188,13 +197,13 @@ window.onload = function () {
         initializeChat();
     } else {
         // Sprawdzamy, czy sesja już się rozpoczęła
-        if (!chatSessionStarted) {
-            mobileWelcomeScreen.style.display = 'flex';
-            chatWrapper.style.display = 'none';
-        } else {
+        if (chatSessionStarted === true) {
             mobileWelcomeScreen.style.display = 'none';
             chatWrapper.style.display = 'flex';
             backButton.style.display = 'flex';
+        } else {
+            mobileWelcomeScreen.style.display = 'flex';
+            chatWrapper.style.display = 'none';
         }
         initializeChat();
     }
@@ -203,14 +212,14 @@ window.onload = function () {
 window.addEventListener('resize', function () {
     if (window.innerWidth <= 768) {
         // Sprawdzamy, czy sesja już się rozpoczęła
-        if (!chatSessionStarted) {
-            mobileWelcomeScreen.style.display = 'flex';
-            chatWrapper.style.display = 'none';
-            backButton.style.display = 'none';
-        } else {
+        if (chatSessionStarted === true) {
             mobileWelcomeScreen.style.display = 'none';
             chatWrapper.style.display = 'flex';
             backButton.style.display = 'flex';
+        } else {
+            mobileWelcomeScreen.style.display = 'flex';
+            chatWrapper.style.display = 'none';
+            backButton.style.display = 'none';
         }
     } else {
         mobileWelcomeScreen.style.display = 'none';
