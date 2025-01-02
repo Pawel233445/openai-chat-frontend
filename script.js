@@ -6,7 +6,7 @@ const chatSendButton = document.querySelector('#chat-input button');
 const chatMessages = document.getElementById('chat-messages');
 const resetChat = document.getElementById('reset-chat');
 const chatForm = document.getElementById('chat-form');
-const textContainer = document.querySelector('.text-container'); // Dodane - pobieranie kontenera z tekstem
+const textContainer = document.querySelector('.text-container');
 const SERVERLESS_FUNCTION_URL = 'https://europe-central2-mickiewicz.cloudfunctions.net/chat'; // Zmień na URL swojej funkcji
 
 async function initializeChat() {
@@ -18,7 +18,6 @@ async function initializeChat() {
         console.error('Error initializing chat:', error);
     }
 }
-
 
 async function sendMessage(message) {
     try {
@@ -72,9 +71,7 @@ function scrollToBottom() {
             chatMessages.scrollTop = lastMessageBottom - containerHeight;
         }
     }
-
 }
-
 
 function displayTypingIndicator() {
     const typingIndicator = document.createElement('div');
@@ -91,16 +88,14 @@ function removeTypingIndicator() {
     }
 }
 
-
 // Event Listeners
 resetChat.addEventListener('click', () => {
-    // Reset all counters when closing the chat
     messageCount = 0;
     chatMessages.innerHTML = '';
-    threadId = null; // ustawiamy na null
-    sessionStorage.removeItem('initialScreenShown'); // Usunięcie flagi z sessionStorage
-    if (textContainer) { // Dodane - Sprawdzenie czy textContainer istnieje
-        textContainer.style.display = ''; //  Dodane - ponowne wyświetlenie planszy wstępnej
+    threadId = null;
+    sessionStorage.removeItem('initialScreenShown');
+    if (textContainer) {
+        textContainer.style.display = '';
     }
     initializeChat();
 });
@@ -108,12 +103,12 @@ resetChat.addEventListener('click', () => {
 chatForm.addEventListener('submit', function(event) {
     event.preventDefault();
     const message = chatInput.value.trim();
-      if (message) {
+    if (message) {
         sendMessage(message);
         chatInput.value = '';
-        if(textContainer) { // Dodane - Sprawdzenie czy textContainer istnieje
-            textContainer.style.display = 'none'; // Dodane - ukrycie planszy wstępnej po wysłaniu pierwszej wiadomości
-        }
+       if (textContainer) {
+          textContainer.style.display = 'none';
+         }
     }
 });
 
@@ -124,20 +119,18 @@ chatInput.addEventListener('keypress', (e) => {
     }
 });
 
-
 // Initialize chat on page load
 window.onload = function () {
     const initialScreenShown = sessionStorage.getItem('initialScreenShown');
-     if (!initialScreenShown) {
-        // Jeśli flaga nie istnieje, to pokaż planszę wstępną i ustaw flagę.
-         if (textContainer) { // Dodane - Sprawdzenie czy textContainer istnieje
-          textContainer.style.display = ''; // Dodane - pokazanie planszy wstępnej
-          sessionStorage.setItem('initialScreenShown', 'true'); // Dodane - ustawienie flagi w sessionStorage
-         }
-     } else {
-         if(textContainer) { // Dodane - Sprawdzenie czy textContainer istnieje
-            textContainer.style.display = 'none'; // Dodane - ukrycie planszy wstępnej jeśli flaga istnieje
-         }
+    if (!initialScreenShown) {
+        if (textContainer) {
+            textContainer.style.display = '';
+             sessionStorage.setItem('initialScreenShown', 'true');
+        }
+    } else {
+        if (textContainer) {
+            textContainer.style.display = 'none';
+        }
     }
     initializeChat();
 };
