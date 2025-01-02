@@ -135,8 +135,16 @@ function clearChat() {
     chatMessages.innerHTML = '';
     threadId = null;
     localStorage.removeItem('chatData');
+    sessionStorage.removeItem('mobileWelcomeShown'); // Usuń flagę sesji powitania
     welcomeMessageShown = false;
     initializeChat();
+    // Pokaż ekran powitalny po wyczyszczeniu czatu na mobile
+    if (window.innerWidth <= 768) {
+        mobileWelcomeScreen.style.display = 'flex';
+        chatWrapper.style.display = 'none';
+        backButton.style.display = 'none';
+        leftSide.style.display = 'none';
+    }
 }
 
 resetChat.addEventListener('click', clearChat);
@@ -149,6 +157,13 @@ chatForm.addEventListener('submit', function (event) {
     if (message) {
         sendMessage(message);
         chatInput.value = '';
+        // Ukryj ekran powitalny po wysłaniu pierwszej wiadomości na mobile
+        if (window.innerWidth <= 768 && mobileWelcomeScreen.style.display === 'flex') {
+            mobileWelcomeScreen.style.display = 'none';
+            chatWrapper.style.display = 'flex';
+            backButton.style.display = 'flex';
+            leftSide.style.display = 'none';
+        }
     }
 });
 
@@ -170,7 +185,6 @@ startChatButton.addEventListener('click', () => {
         backButton.style.display = 'flex';
         leftSide.style.display = 'none';
     }
-
 });
 
 window.onload = function () {
@@ -178,11 +192,19 @@ window.onload = function () {
         mobileWelcomeScreen.style.display = 'none';
         chatWrapper.style.display = 'flex';
         backButton.style.display = 'none';
-         initializeChat();
+        initializeChat();
     } else {
-           mobileWelcomeScreen.style.display = 'flex';
-          chatWrapper.style.display = 'none';
-          initializeChat(); // Przywróć wywołanie initializeChat
+        const mobileWelcomeShown = sessionStorage.getItem('mobileWelcomeShown');
+        if (!mobileWelcomeShown) {
+            mobileWelcomeScreen.style.display = 'flex';
+            chatWrapper.style.display = 'none';
+            sessionStorage.setItem('mobileWelcomeShown', 'true');
+        } else {
+            mobileWelcomeScreen.style.display = 'none';
+            chatWrapper.style.display = 'flex';
+            backButton.style.display = 'flex';
+        }
+        initializeChat();
     }
 };
 
