@@ -6,7 +6,6 @@ const chatSendButton = document.querySelector('#chat-input button');
 const chatMessages = document.getElementById('chat-messages');
 const resetChat = document.getElementById('reset-chat');
 const chatForm = document.getElementById('chat-form');
-const textContainer = document.querySelector('.text-container');
 const SERVERLESS_FUNCTION_URL = 'https://europe-central2-mickiewicz.cloudfunctions.net/chat'; // Zmień na URL swojej funkcji
 
 async function initializeChat() {
@@ -61,6 +60,7 @@ function displayMessage(role, message, isMarkdown = false) {
     scrollToBottom();
 }
 
+
 function scrollToBottom() {
     const lastMessage = chatMessages.lastElementChild;
     if (lastMessage) {
@@ -70,7 +70,9 @@ function scrollToBottom() {
             chatMessages.scrollTop = lastMessageBottom - containerHeight;
         }
     }
+
 }
+
 
 function displayTypingIndicator() {
     const typingIndicator = document.createElement('div');
@@ -87,29 +89,25 @@ function removeTypingIndicator() {
     }
 }
 
+
 // Event Listeners
 resetChat.addEventListener('click', () => {
+    // Reset all counters when closing the chat
     messageCount = 0;
     chatMessages.innerHTML = '';
-    threadId = null;
-    sessionStorage.removeItem('initialScreenShown');
-    if (textContainer) {
-        textContainer.style.display = '';
-    }
+    threadId = null; // ustawiamy na null
     initializeChat();
 });
-
+    
 chatForm.addEventListener('submit', function(event) {
     event.preventDefault();
     const message = chatInput.value.trim();
-    if (message) {
+      if (message) {
         sendMessage(message);
         chatInput.value = '';
-        if (textContainer.style.display !== 'none') { // Sprawdzamy, czy kontener nie jest już ukryty
-            textContainer.style.display = 'none';
-        }
     }
 });
+
 
 chatInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -117,18 +115,8 @@ chatInput.addEventListener('keypress', (e) => {
     }
 });
 
+
 // Initialize chat on page load
 window.onload = function () {
-    const initialScreenShown = sessionStorage.getItem('initialScreenShown');
-    if (!initialScreenShown) {
-        if (textContainer) {
-            textContainer.style.display = '';
-            sessionStorage.setItem('initialScreenShown', 'true');
-        }
-    } else {
-        if (textContainer) {
-            textContainer.style.display = 'none';
-        }
-    }
     initializeChat();
 };
