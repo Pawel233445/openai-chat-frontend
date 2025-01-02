@@ -61,7 +61,6 @@ function displayMessage(role, message, isMarkdown = false) {
     scrollToBottom();
 }
 
-
 function scrollToBottom() {
     const lastMessage = chatMessages.lastElementChild;
     if (lastMessage) {
@@ -99,19 +98,18 @@ resetChat.addEventListener('click', () => {
     }
     initializeChat();
 });
-    
+
 chatForm.addEventListener('submit', function(event) {
     event.preventDefault();
     const message = chatInput.value.trim();
     if (message) {
         sendMessage(message);
         chatInput.value = '';
-       if (textContainer) {
-          textContainer.style.display = 'none';
-         }
+        if (textContainer.style.display !== 'none') { // Sprawdzamy, czy kontener nie jest już ukryty
+            textContainer.style.display = 'none';
+        }
     }
 });
-
 
 chatInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -125,7 +123,7 @@ window.onload = function () {
     if (!initialScreenShown) {
         if (textContainer) {
             textContainer.style.display = '';
-             sessionStorage.setItem('initialScreenShown', 'true');
+            sessionStorage.setItem('initialScreenShown', 'true');
         }
     } else {
         if (textContainer) {
