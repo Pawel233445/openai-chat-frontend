@@ -522,6 +522,7 @@ p {
         min-width: 6em;
         top: 2.8vh;
         height: 4.5vh;
+	margin-right:2.8vh;
     }
 
     .mobile-welcome-screen .image-container {
