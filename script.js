@@ -142,11 +142,10 @@ function clearChat() {
     chatMessages.innerHTML = '';
     threadId = null;
     localStorage.removeItem('chatData');
-    sessionStarted = false;
+    sessionStarted = false; // Resetujemy stan sesji
     if (window.innerWidth <= 768) {
-        hideWelcomeScreen(); // Na mobile reset nie pokazuje ekranu powitalnego
+        hideWelcomeScreen(); // Po resecie na mobile wracamy do widoku czatu
     }
-    // Nie wywołujemy initializeChat() tutaj, aby uniknąć pokazania ekranu powitalnego
 }
 
 function showWelcomeScreen() {
@@ -169,16 +168,7 @@ function hideWelcomeScreen() {
 
 resetChat.addEventListener('click', clearChat);
 
-resetButtonMobile.addEventListener('click', () => {
-    messageCount = 0;
-    chatMessages.innerHTML = '';
-    threadId = null;
-    localStorage.removeItem('chatData');
-    sessionStarted = false;
-    if (window.innerWidth <= 768) {
-        hideWelcomeScreen();
-    }
-});
+resetButtonMobile.addEventListener('click', clearChat);
 
 chatForm.addEventListener('submit', function (event) {
     event.preventDefault();
