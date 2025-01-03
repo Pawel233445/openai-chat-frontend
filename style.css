@@ -359,7 +359,7 @@ p {
         background-color: #aaa;
     }
 }
- 
+
 /* Mobile styles */
 @media (max-width: 768px) {
     body {
@@ -507,7 +507,6 @@ p {
         }
     }
 
-    /* Pozostałe style pozostają bez zmian */
     #reset-chat {
         display: none;
     }
@@ -528,6 +527,22 @@ p {
         margin-right: 0px;
     }
 
+    #chat-input-container {
+        position: fixed; /* Pozostawiamy input fixed na dole */
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+        padding-top: 2vw;
+        padding-bottom: 2vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        box-sizing: border-box;
+        z-index: 100;
+        padding-top: 0;
+    }
+
     .message {
         font-size: 2vh;
     }
@@ -540,6 +555,17 @@ p {
         display: none;
     }
 
+    #chat-messages {
+        padding-top: 55px; /* Dodajemy padding-top równy wysokości nagłówka */
+        padding-bottom: calc(10vw + 2vh);
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        overflow-y: auto;
+        height: auto;
+        max-height: none; /* Usuwamy max-height, bo sticky zarządza widocznością */
+        box-sizing: border-box;
+    }
+
     #send-button {
         font-size: 2.6vh;
         min-width: 6em;
@@ -547,7 +573,69 @@ p {
         height: 4.5vh;
     }
 
-    /* Pozostała część styli bez zmian... */
+    #chat-input-frame input {
+        padding-left: 1.5em;
+        height: 10vw;
+    }
+
+    .mobile-welcome-screen {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+        background-color: #090c11;
+        color: #ffffff;
+    }
+
+    .mobile-welcome-screen .image-container {
+        width: 45vh;
+        height: 50vh;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-bottom: 2vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10vh;
+    }
+
+    .mobile-welcome-screen .image-container img {
+        width: 100vh !important;
+        height: 100vh !important;
+        object-fit: cover;
+    }
+
+    .mobile-welcome-screen .main-title {
+        margin-top: 0;
+        margin-bottom: 7vh;
+        font-size: 4vh;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    #start-chat-button {
+        background-color: #ffffff;
+        color: #090c11;
+        font-size: 2.5vh;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        padding: 1.5vh 3vh;
+        border-radius: 28px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #start-chat-button:hover {
+        background-color: #f0f0f0;
+        border: none;
+    }
 }
 /* Style dla desktop - ukryj ekran powitalny domyślnie */
 @media (min-width: 769px) {
