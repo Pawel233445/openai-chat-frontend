@@ -169,7 +169,17 @@ function hideWelcomeScreen() {
 
 resetChat.addEventListener('click', clearChat);
 
-resetButtonMobile.addEventListener('click', clearChat);
+resetButtonMobile.addEventListener('click', () => {
+    messageCount = 0;
+    chatMessages.innerHTML = '';
+    threadId = null;
+    localStorage.removeItem('chatData');
+    sessionStarted = false;
+    if (window.innerWidth <= 768) {
+        hideWelcomeScreen(); // Na mobile reset nie pokazuje ekranu powitalnego
+    }
+    initializeChat();
+});
 
 chatForm.addEventListener('submit', function (event) {
     event.preventDefault();
