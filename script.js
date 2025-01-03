@@ -1,6 +1,7 @@
 let threadId = null;
 let messageCount = 0;
 let welcomeMessageShown = false;
+let isFirstLoad = true; // Nowa flaga do śledzenia pierwszego ładowania
 const chatContainer = document.getElementById('chat-container');
 const chatInput = document.querySelector('#chat-input-frame input');
 const chatSendButton = document.querySelector('#chat-input button');
@@ -33,6 +34,7 @@ function saveChatToLocalStorage() {
 }
 
 function loadChatFromLocalStorage() {
+    chatMessages.innerHTML = ''; // Wyczyść obecne wiadomości przed załadowaniem
     const storedChatData = localStorage.getItem('chatData');
     if (storedChatData) {
         const chatData = JSON.parse(storedChatData);
@@ -43,6 +45,7 @@ function loadChatFromLocalStorage() {
         }
         threadId = chatData.threadId;
         messageCount = chatData.messageCount;
+        welcomeMessageShown = true; // Ustawiamy na true, żeby nie pokazywać ponownie
         console.log('Chat loaded from local storage with thread ID:', threadId);
         scrollToBottom();
     }
@@ -50,12 +53,15 @@ function loadChatFromLocalStorage() {
 
 async function initializeChat(showWelcomeMessage = true) {
     try {
-        messageCount = 0;
-        loadChatFromLocalStorage();
-        if (!threadId && showWelcomeMessage && !welcomeMessageShown) {
+        if (isFirstLoad) {
+            loadChatFromLocalStorage();
+            isFirstLoad = false;
+        }
+        
+        if (!localStorage.getItem('chatData') && showWelcomeMessage && !welcomeMessageShown) {
             displayMessage('assistant', 'Cześć, jestem Adam Mickiewicz i chętnie Ci o sobie opowiem. :)');
-            console.log('Chat initialized with thread ID:', threadId);
             welcomeMessageShown = true;
+            saveChatToLocalStorage(); // Zapisz wiadomość powitalną
         }
     } catch (error) {
         console.error('Error initializing chat:', error);
@@ -161,6 +167,7 @@ function clearChat() {
     threadId = null;
     localStorage.removeItem('chatData');
     welcomeMessageShown = false;
+    isFirstLoad = true; // Reset flagi przy czyszczeniu
     initializeChat();
 }
 
@@ -184,7 +191,6 @@ backButton.addEventListener('click', () => {
 startChatButton.addEventListener('click', () => {
     setWelcomeSeen();
     hideWelcomeScreen();
-    initializeChat();
 });
 
 // Initial setup
