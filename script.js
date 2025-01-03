@@ -146,7 +146,7 @@ function clearChat() {
     if (window.innerWidth <= 768) {
         hideWelcomeScreen(); // Na mobile reset nie pokazuje ekranu powitalnego
     }
-    initializeChat();
+    // Nie wywołujemy initializeChat() tutaj, aby uniknąć pokazania ekranu powitalnego
 }
 
 function showWelcomeScreen() {
@@ -176,9 +176,8 @@ resetButtonMobile.addEventListener('click', () => {
     localStorage.removeItem('chatData');
     sessionStarted = false;
     if (window.innerWidth <= 768) {
-        hideWelcomeScreen(); // Na mobile reset nie pokazuje ekranu powitalnego
+        hideWelcomeScreen();
     }
-    initializeChat();
 });
 
 chatForm.addEventListener('submit', function (event) {
