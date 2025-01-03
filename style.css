@@ -227,7 +227,11 @@ p {
         padding-bottom: 1vh;
         font-size: 1.5vh;
     }
-
+    
+	#chat-input-frame input{
+	height:3vw;
+	}
+	
     #chat-header {
         padding-bottom: 2vh;
         padding-top: 2vh;
