@@ -1,6 +1,6 @@
 let threadId = null;
 let messageCount = 0;
-let sessionStarted = false;
+let welcomeMessageShown = false;
 const chatContainer = document.getElementById('chat-container');
 const chatInput = document.querySelector('#chat-input-frame input');
 const chatSendButton = document.querySelector('#chat-input button');
@@ -15,6 +15,10 @@ const mobileWelcomeScreen = document.querySelector('.mobile-welcome-screen');
 const chatWrapper = document.getElementById('chat-wrapper');
 const startChatButton = document.getElementById('start-chat-button');
 
+// Session storage management
+const hasSeenWelcome = () => sessionStorage.getItem('hasSeenWelcome') === 'true';
+const setWelcomeSeen = () => sessionStorage.setItem('hasSeenWelcome', 'true');
+
 function saveChatToLocalStorage() {
     const chatData = {
         messages: Array.from(chatMessages.children).map(element => ({
@@ -23,8 +27,7 @@ function saveChatToLocalStorage() {
             isMarkdown: element.innerHTML.includes("<p>")
         })),
         threadId: threadId,
-        messageCount: messageCount,
-        sessionStarted: sessionStarted
+        messageCount: messageCount
     };
     localStorage.setItem('chatData', JSON.stringify(chatData));
 }
@@ -40,25 +43,19 @@ function loadChatFromLocalStorage() {
         }
         threadId = chatData.threadId;
         messageCount = chatData.messageCount;
-        sessionStarted = chatData.sessionStarted || false;
-        console.log('Chat loaded from local storage with thread ID:', threadId, 'Session started:', sessionStarted);
+        console.log('Chat loaded from local storage with thread ID:', threadId);
         scrollToBottom();
     }
 }
 
-async function initializeChat() {
+async function initializeChat(showWelcomeMessage = true) {
     try {
         messageCount = 0;
         loadChatFromLocalStorage();
-        if (window.innerWidth <= 768) { // Tylko na mobile
-            if (!sessionStarted) {
-                showWelcomeScreen();
-                displayMessage('assistant', 'Cześć, jestem Adam Mickiewicz i chętnie Ci o sobie opowiem. :)');
-            } else {
-                hideWelcomeScreen();
-            }
-        } else {
-            hideWelcomeScreen(); // Na desktopie zawsze ukryj
+        if (!threadId && showWelcomeMessage && !welcomeMessageShown) {
+            displayMessage('assistant', 'Cześć, jestem Adam Mickiewicz i chętnie Ci o sobie opowiem. :)');
+            console.log('Chat initialized with thread ID:', threadId);
+            welcomeMessageShown = true;
         }
     } catch (error) {
         console.error('Error initializing chat:', error);
@@ -137,23 +134,14 @@ function removeTypingIndicator() {
     }
 }
 
-function clearChat() {
-    messageCount = 0;
-    chatMessages.innerHTML = '';
-    threadId = null;
-    localStorage.removeItem('chatData');
-    sessionStarted = false; // Resetujemy stan sesji
-    if (window.innerWidth <= 768) {
-        hideWelcomeScreen(); // Po resecie na mobile wracamy do widoku czatu
-    }
-}
-
 function showWelcomeScreen() {
-    mobileWelcomeScreen.style.display = 'flex';
-    chatWrapper.style.display = 'none';
-    backButton.style.display = 'none';
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 768 && !hasSeenWelcome()) {
+        mobileWelcomeScreen.style.display = 'flex';
+        chatWrapper.style.display = 'none';
+        backButton.style.display = 'flex';
         leftSide.style.display = 'none';
+    } else {
+        hideWelcomeScreen();
     }
 }
 
@@ -163,11 +151,29 @@ function hideWelcomeScreen() {
     if (window.innerWidth <= 768) {
         backButton.style.display = 'flex';
         leftSide.style.display = 'none';
+    } else {
+        backButton.style.display = 'none';
+        leftSide.style.display = 'flex';
     }
 }
 
-resetChat.addEventListener('click', clearChat);
+function clearChat() {
+    messageCount = 0;
+    chatMessages.innerHTML = '';
+    threadId = null;
+    localStorage.removeItem('chatData');
+    welcomeMessageShown = false;
+    
+    if (window.innerWidth <= 768) {
+        sessionStorage.removeItem('hasSeenWelcome');
+        showWelcomeScreen();
+    } else {
+        initializeChat();
+    }
+}
 
+// Event Listeners
+resetChat.addEventListener('click', clearChat);
 resetButtonMobile.addEventListener('click', clearChat);
 
 chatForm.addEventListener('submit', function (event) {
@@ -180,29 +186,31 @@ chatForm.addEventListener('submit', function (event) {
 });
 
 backButton.addEventListener('click', () => {
-    if (window.innerWidth <= 768) {
+    if (!hasSeenWelcome()) {
         showWelcomeScreen();
+    } else {
+        hideWelcomeScreen();
     }
 });
 
 startChatButton.addEventListener('click', () => {
-    sessionStarted = true;
-    saveChatToLocalStorage();
+    setWelcomeSeen();
     hideWelcomeScreen();
+    initializeChat();
 });
 
+// Initial setup
 window.onload = function () {
+    showWelcomeScreen();
     initializeChat();
 };
 
 window.addEventListener('resize', function () {
     if (window.innerWidth <= 768) {
-        if (sessionStarted) {
-            hideWelcomeScreen();
-        } else {
+        if (!hasSeenWelcome()) {
             showWelcomeScreen();
         }
     } else {
-        hideWelcomeScreen(); // Na desktopie zawsze ukryj
+        hideWelcomeScreen();
     }
 });
