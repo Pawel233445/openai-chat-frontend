@@ -362,19 +362,8 @@ p {
 
 /* Mobile styles */
 @media (max-width: 768px) {
-    body {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
     .content-wrapper {
         flex-direction: column;
-        height: 100vh;
-        position: fixed;
-        width: 100%;
-        overflow: hidden;
     }
 
     .left-side {
@@ -385,126 +374,46 @@ p {
 
     .right-side {
         width: 100%;
-        height: 100vh;
         padding: 0px;
         align-items: center;
         justify-content: center;
-        position: fixed;
-        overflow: hidden;
     }
 
     #chat-wrapper {
-        padding-top: 0;
+        padding-top: 0; /* Usuwamy padding-top, bo header będzie sticky */
         box-sizing: border-box;
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
+        height: 100vh;
+        overflow: hidden; /* Pozostawiamy ukrywanie overflow */
         display: flex;
         flex-direction: column;
         padding-left: 0;
-        position: fixed;
     }
 
     #chat-container {
-        height: 100%;
+        height: 100vh;
         display: flex;
         flex-direction: column;
-        position: relative;
-        overflow: hidden;
     }
 
     #chat-header {
-        position: fixed;
-        top: 0;
+        position: sticky; /* Ustawiamy pozycję sticky */
+        top: 0; /* Przyklejenie do góry kontenera */
         left: 0;
         right: 0;
-        z-index: 1000;
+        z-index: 100; /* Upewnienie się, że nagłówek jest nad innymi elementami */
         background-color: #fff;
-        padding: 2vh 5vw;
+        padding-left: 5vw;
+        padding-right: 5vw;
         box-sizing: border-box;
+        padding-top: 2vh;
+        padding-bottom: 2vh;
         font-size: 2vh;
         align-items: center;
         width: 100%;
-        margin: 0;
+        margin-left: 0;
+        margin-right: 0;
+        /* Dodajemy cień, aby oddzielić od treści */
         box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);
-        height: 55px;
-    }
-
-    #chat-messages {
-        position: fixed;
-        top: 55px;
-        bottom: 10vw;
-        left: 0;
-        right: 0;
-        padding: 0.5em;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        box-sizing: border-box;
-        height: auto;
-    }
-
-    #chat-input-container {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: #fff;
-        padding: 2vh 0;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        box-sizing: border-box;
-        z-index: 1000;
-        min-height: 10vw;
-    }
-
-    #chat-input-frame {
-        width: 100%;
-        padding: 0 5vw;
-        box-sizing: border-box;
-        position: relative;
-    }
-
-    #chat-input-frame input {
-        padding-left: 1.5em;
-        height: 10vw;
-        box-sizing: border-box;
-    }
-
-    #chat-input-frame input:focus {
-        position: relative;
-        z-index: 1001;
-    }
-
-    .mobile-welcome-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: #090c11;
-        color: #ffffff;
-        overflow: hidden;
-        z-index: 2000;
-    }
-
-    /* Dodajemy style dla iOS */
-    @supports (-webkit-touch-callout: none) {
-        #chat-header {
-            position: sticky;
-        }
-        
-        #chat-messages {
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-        
-        #chat-input-container {
-            padding-bottom: env(safe-area-inset-bottom);
-        }
     }
 
     #reset-chat {
