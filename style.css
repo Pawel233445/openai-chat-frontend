@@ -229,7 +229,7 @@ p {
     }
     
 	#chat-input-frame input{
-	height:3vw;
+	height: 3vw!important;
 	}
 	
     #chat-header {
