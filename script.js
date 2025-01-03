@@ -135,13 +135,11 @@ function removeTypingIndicator() {
 }
 
 function showWelcomeScreen() {
-    if (window.innerWidth <= 768 && !hasSeenWelcome()) {
+    if (window.innerWidth <= 768) {
         mobileWelcomeScreen.style.display = 'flex';
         chatWrapper.style.display = 'none';
         backButton.style.display = 'flex';
         leftSide.style.display = 'none';
-    } else {
-        hideWelcomeScreen();
     }
 }
 
@@ -163,13 +161,7 @@ function clearChat() {
     threadId = null;
     localStorage.removeItem('chatData');
     welcomeMessageShown = false;
-    
-    if (window.innerWidth <= 768) {
-        sessionStorage.removeItem('hasSeenWelcome');
-        showWelcomeScreen();
-    } else {
-        initializeChat();
-    }
+    initializeChat();
 }
 
 // Event Listeners
@@ -186,11 +178,7 @@ chatForm.addEventListener('submit', function (event) {
 });
 
 backButton.addEventListener('click', () => {
-    if (!hasSeenWelcome()) {
-        showWelcomeScreen();
-    } else {
-        hideWelcomeScreen();
-    }
+    showWelcomeScreen();
 });
 
 startChatButton.addEventListener('click', () => {
@@ -201,16 +189,19 @@ startChatButton.addEventListener('click', () => {
 
 // Initial setup
 window.onload = function () {
-    showWelcomeScreen();
+    if (window.innerWidth <= 768) {
+        showWelcomeScreen();
+    } else {
+        hideWelcomeScreen();
+    }
     initializeChat();
 };
 
 window.addEventListener('resize', function () {
     if (window.innerWidth <= 768) {
-        if (!hasSeenWelcome()) {
-            showWelcomeScreen();
-        }
+        backButton.style.display = 'flex';
     } else {
+        backButton.style.display = 'none';
         hideWelcomeScreen();
     }
 });
