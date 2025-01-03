@@ -50,11 +50,15 @@ async function initializeChat() {
     try {
         messageCount = 0;
         loadChatFromLocalStorage();
-        if (!sessionStarted) {
-            showWelcomeScreen();
-            displayMessage('assistant', 'Cześć, jestem Adam Mickiewicz i chętnie Ci o sobie opowiem. :)');
+        if (window.innerWidth <= 768) { // Tylko na mobile
+            if (!sessionStarted) {
+                showWelcomeScreen();
+                displayMessage('assistant', 'Cześć, jestem Adam Mickiewicz i chętnie Ci o sobie opowiem. :)');
+            } else {
+                hideWelcomeScreen();
+            }
         } else {
-            hideWelcomeScreen();
+            hideWelcomeScreen(); // Na desktopie zawsze ukryj
         }
     } catch (error) {
         console.error('Error initializing chat:', error);
@@ -139,7 +143,9 @@ function clearChat() {
     threadId = null;
     localStorage.removeItem('chatData');
     sessionStarted = false;
-    showWelcomeScreen();
+    if (window.innerWidth <= 768) {
+        hideWelcomeScreen(); // Na mobile reset nie pokazuje ekranu powitalnego
+    }
     initializeChat();
 }
 
@@ -175,7 +181,9 @@ chatForm.addEventListener('submit', function (event) {
 });
 
 backButton.addEventListener('click', () => {
-    showWelcomeScreen();
+    if (window.innerWidth <= 768) {
+        showWelcomeScreen();
+    }
 });
 
 startChatButton.addEventListener('click', () => {
@@ -189,9 +197,13 @@ window.onload = function () {
 };
 
 window.addEventListener('resize', function () {
-    if (sessionStarted) {
-        hideWelcomeScreen();
+    if (window.innerWidth <= 768) {
+        if (sessionStarted) {
+            hideWelcomeScreen();
+        } else {
+            showWelcomeScreen();
+        }
     } else {
-        showWelcomeScreen();
+        hideWelcomeScreen(); // Na desktopie zawsze ukryj
     }
 });
