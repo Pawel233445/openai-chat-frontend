@@ -57,7 +57,7 @@ async function initializeChat(showWelcomeMessage = true) {
             loadChatFromLocalStorage();
             isFirstLoad = false;
         }
-
+        
         if (!localStorage.getItem('chatData') && showWelcomeMessage && !welcomeMessageShown) {
             displayMessage('assistant', 'Cześć, jestem Adam Mickiewicz i chętnie Ci o sobie opowiem. :)');
             welcomeMessageShown = true;
@@ -191,11 +191,6 @@ backButton.addEventListener('click', () => {
 startChatButton.addEventListener('click', () => {
     setWelcomeSeen();
     hideWelcomeScreen();
-});
-
-// Automatyczne przewijanie czatu do dołu po skupieniu na polu input
-chatInput.addEventListener('focus', () => {
-    chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
 // Initial setup
