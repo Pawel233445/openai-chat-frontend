@@ -209,6 +209,10 @@ p {
     font-size: 2.2vh;
 }
 
+#ikona {
+	width:1.4em!important;
+}
+
 @media (min-width: 1441px) {
     .message {
         font-size: 1.4vh; /* Wielkość czcionki dla ekranów powyżej 1200px szerokości */
