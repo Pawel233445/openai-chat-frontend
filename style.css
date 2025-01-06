@@ -449,7 +449,7 @@ p {
         left: 0;
         right: 0;
         padding: 0.5em;
-	padding-left:5vw!important
+	padding-left:5vw!important;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         box-sizing: border-box;
