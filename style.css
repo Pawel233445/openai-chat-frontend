@@ -445,7 +445,7 @@ p {
 
     #chat-messages {
         position: absolute;
-        top: 70px;
+        top: 12vh;
         bottom: 5vw;
         left: 0;
         right: 0;
