@@ -421,7 +421,7 @@ p {
     #chat-container {
         height: 100vh;
         display: flex;
-        flex-direction: column; /* Ustawienie flex direction na column */
+        flex-direction: column;
         position: relative;
         overflow: hidden;
     }
@@ -444,22 +444,19 @@ p {
     }
 
     #chat-messages {
-        flex-grow: 1; /* Pozwól, aby zajmowało dostępną przestrzeń */
+        flex-grow: 1;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         box-sizing: border-box;
         padding: 0.5em;
         padding-left: 5vw !important;
         padding-right: 5vw !important;
-        margin-top: 55px; /* Ustaw margines, aby uniknąć nakładania na header */
-        margin-bottom: 10vw; /* Ustaw margines na dole dla inputa */
+        margin-top: 55px;
+        padding-bottom: 12vw; /* Dodaj padding na dole, aby zrobić miejsce nad inputem */
     }
 
     #chat-input-container {
-        position: fixed; /* Ustawienie fixed dla inputa */
-        bottom: 0;
-        left: 0;
-        right: 0;
+        /* Pozostaw bez position: fixed, aby był w naturalnym przepływie */
         background-color: #fff;
         padding: 2vh 0;
         display: flex;
