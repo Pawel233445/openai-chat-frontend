@@ -407,6 +407,7 @@ p {
 
     #chat-wrapper {
         padding-top: 0;
+	padding-right:0;
         box-sizing: border-box;
         height: 100vh;
         width: 100%;
