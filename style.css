@@ -407,7 +407,7 @@ p {
 
     #chat-wrapper {
         padding-top: 0;
-        padding-right:0;
+        padding-right: 0;
         box-sizing: border-box;
         height: 100vh;
         width: 100%;
@@ -421,8 +421,8 @@ p {
     #chat-container {
         height: 100vh;
         display: flex;
-        flex-direction: column;
-        position: relative; /* Dodane */
+        flex-direction: column; /* Ustawienie flex direction na column */
+        position: relative;
         overflow: hidden;
     }
 
@@ -444,21 +444,19 @@ p {
     }
 
     #chat-messages {
-        position: absolute;
-        top: 55px;
-        left: 0;
-        right: 0;
-        padding: 0.5em;
-        padding-left:5vw!important;
-        padding-right:5vw!important;
+        flex-grow: 1; /* Pozwól, aby zajmowało dostępną przestrzeń */
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         box-sizing: border-box;
-        padding-bottom: 10vw; /* Dodane */
+        padding: 0.5em;
+        padding-left: 5vw !important;
+        padding-right: 5vw !important;
+        margin-top: 55px; /* Ustaw margines, aby uniknąć nakładania na header */
+        margin-bottom: 10vw; /* Ustaw margines na dole dla inputa */
     }
 
     #chat-input-container {
-        position: absolute; /* Zmiana na absolute */
+        position: fixed; /* Ustawienie fixed dla inputa */
         bottom: 0;
         left: 0;
         right: 0;
@@ -531,8 +529,8 @@ p {
     #napis {
         display: none;
     }
-	
-	#reset img {
+
+    #reset img {
         width: 33px !important;
     }
 
@@ -541,9 +539,8 @@ p {
         min-width: 6em;
         top: 2.5vh;
         height: 4.2vh;
-	margin-right:2.6vh;
-	border: none;
-	
+        margin-right: 2.6vh;
+        border: none;
     }
 
     .mobile-welcome-screen .image-container {
@@ -593,6 +590,7 @@ p {
         border: none;
     }
 }
+
 /* Style dla desktop - ukryj ekran powitalny domyślnie */
 @media (min-width: 769px) {
     .mobile-welcome-screen {
