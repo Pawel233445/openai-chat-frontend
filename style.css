@@ -422,7 +422,7 @@ p {
         height: 100vh;
         display: flex;
         flex-direction: column;
-        position: relative;
+        position: relative; /* Dodane */
         overflow: hidden;
     }
 
@@ -445,20 +445,20 @@ p {
 
     #chat-messages {
         position: absolute;
-        top: 55px; /* Ustawienie top na wysokość headera */
-        bottom: 10vw; /* Ustawienie bottom na wysokość kontenera inputa */
+        top: 55px;
         left: 0;
         right: 0;
         padding: 0.5em;
         padding-left:5vw!important;
         padding-right:5vw!important;
-        overflow-y: auto; /* Dodane */
+        overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         box-sizing: border-box;
+        padding-bottom: 10vw; /* Dodane */
     }
 
     #chat-input-container {
-        position: fixed;
+        position: absolute; /* Zmiana na absolute */
         bottom: 0;
         left: 0;
         right: 0;
