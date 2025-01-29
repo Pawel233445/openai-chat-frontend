@@ -60,6 +60,7 @@ async function initializeChat(showWelcomeMessage = true) {
         
         if (!localStorage.getItem('chatData') && showWelcomeMessage && !welcomeMessageShown) {
             displayMessage('assistant', 'Cześć, jestem Adam Mickiewicz i chętnie Ci o sobie opowiem. :)');
+            displayMessage('assistant', 'Odpowiedzi generowane są przez AI, zachowaj do nich dystans.');
             welcomeMessageShown = true;
             saveChatToLocalStorage(); // Zapisz wiadomość powitalną
         }
