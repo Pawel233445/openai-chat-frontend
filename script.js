@@ -1,7 +1,7 @@
 let threadId = null;
 let messageCount = 0;
 let welcomeMessageShown = false;
-let isFirstLoad = true; // Nowa flaga do śledzenia pierwszego ładowania
+let isFirstLoad = true;
 const chatContainer = document.getElementById('chat-container');
 const chatInput = document.querySelector('#chat-input-frame input');
 const chatSendButton = document.querySelector('#chat-input button');
@@ -16,7 +16,6 @@ const mobileWelcomeScreen = document.querySelector('.mobile-welcome-screen');
 const chatWrapper = document.getElementById('chat-wrapper');
 const startChatButton = document.getElementById('start-chat-button');
 
-// Session storage management
 const hasSeenWelcome = () => sessionStorage.getItem('hasSeenWelcome') === 'true';
 const setWelcomeSeen = () => sessionStorage.setItem('hasSeenWelcome', 'true');
 
@@ -34,18 +33,18 @@ function saveChatToLocalStorage() {
 }
 
 function loadChatFromLocalStorage() {
-    chatMessages.innerHTML = ''; // Wyczyść obecne wiadomości przed załadowaniem
+    chatMessages.innerHTML = '';
     const storedChatData = localStorage.getItem('chatData');
     if (storedChatData) {
         const chatData = JSON.parse(storedChatData);
         if (chatData.messages) {
             chatData.messages.forEach(msg => {
-                displayMessage(msg.role, msg.message, msg.isMarkdown);
+                displayMessage(msg.role, msg.message, msg.isMarkdown, false); // isStreaming ustaw na false przy ładowaniu
             });
         }
         threadId = chatData.threadId;
         messageCount = chatData.messageCount;
-        welcomeMessageShown = true; // Ustawiamy na true, żeby nie pokazywać ponownie
+        welcomeMessageShown = true;
         console.log('Chat loaded from local storage with thread ID:', threadId);
         scrollToBottom();
     }
@@ -57,12 +56,12 @@ async function initializeChat(showWelcomeMessage = true) {
             loadChatFromLocalStorage();
             isFirstLoad = false;
         }
-        
+
         if (!localStorage.getItem('chatData') && showWelcomeMessage && !welcomeMessageShown) {
             displayMessage('assistant', 'Cześć, jestem Adam Mickiewicz i chętnie Ci o sobie opowiem. :)');
             displayMessage('assistant', 'Odpowiedzi generowane są przez AI, zachowaj do nich dystans.');
             welcomeMessageShown = true;
-            saveChatToLocalStorage(); // Zapisz wiadomość powitalną
+            saveChatToLocalStorage();
         }
     } catch (error) {
         console.error('Error initializing chat:', error);
@@ -86,34 +85,92 @@ async function sendMessage(message) {
                 threadId: threadId
             }),
         });
-        console.log('Odpowiedź serwera:', response);
-        const data = await response.json();
-        removeTypingIndicator();
-        console.log('Dane z serwera:', data);
-        if (data.threadId) {
-            threadId = data.threadId;
+
+        if (!response.ok) {
+            removeTypingIndicator();
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-        displayMessage('assistant', data.response, true);
-        saveChatToLocalStorage();
+
+        removeTypingIndicator();
+
+        const assistantMessageElement = displayMessage('assistant', '', false, true);
+        let partialResponse = "";
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+                console.log("Strumień zakończony.");
+                saveChatToLocalStorage();
+                break;
+            }
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n').filter(line => line.startsWith('data: '));
+
+            for (const line of lines) {
+                const content = line.substring(5); // Usuń "data: "
+                try {
+                    const payload = JSON.parse(content);
+                    if (payload.response) {
+                        console.log("Odebrano chunk SSE:", payload.response);
+                        partialResponse += payload.response;
+                        assistantMessageElement.innerHTML = marked.parse(partialResponse); // PARSUJ MARKDOWN I WYŚWIETLAJ W TRAKCIE STRUMIENIOWANIA
+                        scrollToBottom();
+                    }
+                    if (payload.threadId) {
+                        threadId = payload.threadId;
+                    }
+                    if (payload.done) {
+                        console.log("Odpowiedź DONE signal odebrany.");
+                        if (payload.fullResponse) {
+                            // Nie trzeba ponownie parsować Markdown tutaj
+                        }
+                        reader.cancel();
+                        saveChatToLocalStorage();
+                        return;
+                    }
+                    if (payload.error) {
+                        console.error("Błąd ze strumienia:", payload.error);
+                        assistantMessageElement.textContent = "Przepraszam, wystąpił błąd.";
+                        reader.cancel();
+                        return;
+                    }
+
+                } catch (e) {
+                    console.error("Błąd parsowania JSON:", e, content);
+                }
+            }
+        }
+
+
     } catch (error) {
         console.error('Error sending message:', error);
         removeTypingIndicator();
+        displayMessage('assistant', 'Przepraszam, wystąpił problem z serwerem.', false);
     }
 }
 
-function displayMessage(role, message, isMarkdown = false) {
+function displayMessage(role, message, isMarkdown = false, isStreaming = false) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', `${role}-message`);
 
-    if (isMarkdown) {
-        messageElement.innerHTML = marked.parse(message);
+    if (!isStreaming) { // Jeśli to nie jest strumieniowanie, ustaw całą wiadomość od razu
+        if (isMarkdown) {
+            messageElement.innerHTML = marked.parse(message);
+        } else {
+            messageElement.textContent = message;
+        }
     } else {
-        messageElement.textContent = message;
+        // Dla strumieniowania, wiadomość jest budowana stopniowo, więc element jest początkowo pusty
     }
 
     chatMessages.appendChild(messageElement);
     scrollToBottom();
+    return messageElement; // Zwróć element wiadomości, aby można go było aktualizować w strumieniu
 }
+
 
 function scrollToBottom() {
     const lastMessage = chatMessages.lastElementChild;
@@ -168,11 +225,10 @@ function clearChat() {
     threadId = null;
     localStorage.removeItem('chatData');
     welcomeMessageShown = false;
-    isFirstLoad = true; // Reset flagi przy czyszczeniu
+    isFirstLoad = true;
     initializeChat();
 }
 
-// Event Listeners
 resetChat.addEventListener('click', clearChat);
 resetButtonMobile.addEventListener('click', clearChat);
 
@@ -194,7 +250,6 @@ startChatButton.addEventListener('click', () => {
     hideWelcomeScreen();
 });
 
-// Initial setup
 window.onload = function () {
     if (window.innerWidth <= 768) {
         showWelcomeScreen();
